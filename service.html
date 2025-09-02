@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multimedia</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  
+   <style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+     body {
+      font-family: 'Pontano Sans', sans-serif;
+    
+    }
+       .first-header {
+      padding: 20px;
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      background-color: #2E2E2E;
+      font-size: 16px;
+    }
+    .first-header p{
+        color: white;
+    }
+    .first-header:hover{
+      text-decoration: underline;
+    }
+
+.main-header {
+      background-color: #fff;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-social {
+      
+      padding-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding-left: 12px;
+    }
+
+    .logo {
+      height: 70px;
+      
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      
+    }
+
+    .nav-links a {
+
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #8d6d2a;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-right: 16px;
+      
+    }
+
+    .login-btn,
+    .subscribe-btn {
+      padding: 5px 15px;
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      color: black;
+    }
+
+    .login-btn {
+      background-color: #8d6d2a;
+    }
+
+    .subscribe-btn {
+     background-color: #8d6d2a;
+    }
+
+   
+ .search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 5px;
+}
+.search-bar-container-lasts{
+  padding-top: 100px;
+}
+
+.search-bar-bg {
+  background-color: #2e2e2e;
+  height: 24px;
+  border-radius: 20px;
+  
+  width: 70%;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-loop 8s linear infinite;
+      padding-top: 3px;
+      gap: 24px;
+}
+
+.scrolling-content {
+  display: flex;
+  white-space: nowrap;
+  color: white;
+  gap: 24px;
+  font-size: 12px;
+}
+
+.up {
+  color: #22ed00;
+}
+.down {
+  color: #ff0000;
+}
+
+@keyframes scroll-loop {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.search-box {
+      position: relative;
+      width: 174px;
+      margin-right: 16px;
+      
+    }
+
+    .search-box input {
+         width: 80%;
+    height: 14px;
+      padding: 5px 15px;
+      padding-right: 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Animated text */
+    .animated-text-container {
+      position: absolute;
+      left: 15px;
+      top: 30%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
+      font-size: 14px;
+      overflow: hidden;
+      height: 16px;
+    }
+
+    .animated-text-container span {
+      display: block;
+      animation: slideText 3s ease-in-out infinite;
+    }
+
+    @keyframes slideText {
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      10% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+    }
+
+    /* Hide animated text when user types */
+    .search-box input:focus + .animated-text-container,
+    .search-box input:not(:placeholder-shown) + .animated-text-container {
+      display: none;
+    }
+ 
+
+    .social-icons {
+      
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 16px;
+    
+      
+    }
+
+    .social-icons i {
+     background-color: black;
+      
+     
+      color: #8d6d2a;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #8d6d2a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links,
+      .header-buttons,
+      .search-bar-container {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        padding: 8px 0;
+      }
+
+      .mobile-active .nav-links,
+      .mobile-active .header-buttons,
+      .mobile-active .search-bar-container {
+        display: flex;
+        gap: 20px;
+      }
+
+      .search-box {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+
+      .social-icon {
+        margin-bottom: -20px;
+      }
+      .search-bar-bg {
+        width: 100%;
+      }
+    }
+/* main-header */
+/* === Header / Dropdown Toggle === */
+    .topbar {
+      background: #1f1f1f;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .topbar h1 i {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .topbar h1.rotate i {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-links {
+      display: none;
+      background: #1f1f1f;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 14px;
+      border-top: 1px solid #333;
+    }
+
+    .dropdown-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+
+    .dropdown-links a:hover,
+    .dropdown-links a.active {
+      color: gold;
+      border-bottom: 2px solid gold;
+      padding-bottom: 3px;
+    }
+
+    .dropdown-links.show {
+      display: flex;
+    }
+
+   
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+/* === Media Queries === */
+
+/* Small phones */
+@media (max-width: 480px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 15px;
+  }
+
+  .topbar h1 {
+    font-size: 18px;
+    gap: 6px;
+  }
+
+  .dropdown-links {
+    flex-direction: column;
+    padding: 10px 15px;
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .dropdown-links a {
+    margin: 5px 0;
+  }
+}
+
+/* Tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px 20px;
+  }
+
+  .dropdown-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 20px;
+  }
+}
+
+/* Desktops (already optimized, but just in case) */
+@media (min-width: 769px) {
+  .topbar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .dropdown-links {
+    flex-direction: row;
+    gap: 15px;
+  }
+}
+    .container {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px;
+    }
+
+    .left-panel {
+      width: 22%;
+      padding-right: 20px;
+    }
+
+    .middle-panel {
+      width: 53%;
+    }
+
+    .right-panel {
+      width: 22%;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section img {
+      width: 100%;
+      border-radius: 5px;
+    }
+
+    h1, h2, h3 {
+      color: #333;
+    }
+
+    h1 {
+      font-size: 26px;
+      
+    }
+
+    h2 {
+      font-size: 26px;
+    
+      color: #c2922b;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: black;
+      text-align: justify;
+      padding: 5px;
+      max-width: 650px;
+    }
+
+    .highlight-title {
+      font-weight: bold;
+      padding-top: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #c2922b;
+    }
+
+    .card-list .card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .card-text {
+      padding: 10px;
+      font-weight: 500;
+      font-size: 13px;
+    }
+    .change{
+      color: #8d6d2a;
+      max-width: 280px;
+        }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .cap{
+      font-size: 18px;
+    }
+    .size{
+      font-size: 15px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    .grid-icon img {
+      text-align: center;
+   height: auto;
+   width: 40px;
+    }
+
+    .grid-item {
+       text-align: center; /* sab kuch center me */
+
+      
+    }
+    .grid-icon strong {
+
+  display: block;
+}
+.heads {
+  text-align: center;
+}
+
+.heads hr {
+  width: 150px;
+  border: 1px solid #c2922b;
+  margin: 5px auto;
+}
+
+.footer-slide {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center; /* center whole rows */
+}
+
+.footer-slide .row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.footer-slide img {
+    height: 40px;/* adjust as needed */
+  object-fit: contain;
+}
+
+
+.grid-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+    @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 15px;
+  }
+
+  .left-panel,
+  .middle-panel,
+  .right-panel {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 13px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .heads h1 {
+    font-size: 24px;
+  }
+  .footer-slide img {
+    height: 35px;
+  }
+}
+
+/* Phones */
+@media (max-width: 768px) {
+  .heads h1 {
+    font-size: 20px;
+  }
+
+  .footer-slide .row {
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .footer-slide img {
+    height: 30px;
+  }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+  .heads h1 {
+    font-size: 18px;
+  }
+
+  .footer-slide img {
+    height: 28px;
+  }
+
+  .footer-slide .row {
+    gap: 10px;
+    padding: 10px;
+  }
+}
+ .footer-container {
+  background-image: url(./image/footer-bg\ 1.png);
+  background-size: cover;
+  background-position: center;
+  padding: 60px 40px 30px;
+  color: #fff;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.social-iconss{
+  padding-bottom: 10px;
+}
+
+.divider {
+  width: 1px;
+  background: #444;
+  height: 60%;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1300px;
+  margin: auto;
+  gap: 30px;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 280px;
+  padding-right: 40px;
+}
+
+.social-iconss img {
+  height: 24px;
+}
+
+.footer-left p {
+  font-size: 20px;
+  
+  
+
+  max-width: 580px;
+  color: #ddd;
+}
+p span{
+  color: #8d6d2a;
+}
+
+.footer-left .socials {
+  margin-top: 20px;
+}
+
+.footer-left .socials i {
+  margin-right: 15px;
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-left .socials i:hover {
+  color: orange;
+}
+
+.footer-center {
+  min-width: 220px;
+  padding-left: 20px;
+}
+
+.footer-center ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-center li {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-center li:first-child {
+  font-weight: bold;
+  color: orange;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.footer-center li:hover {
+  color: orange;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 280px;
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.footer-right img {
+  height: 60px;
+  width: 100px;
+  object-fit: contain;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.footer-right img:hover {
+  transform: scale(1.05);
+}
+
+.search-boxs {
+  position: relative;
+  width: 180px;
+ 
+}
+
+.search-boxs input {
+ width: 80%;
+    height: 18px;
+
+  padding: 5px 15px;
+  padding-right: 35px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* -------- RESPONSIVE -------- */
+
+@media (max-width: 1024px) {
+  .footer-container {
+    padding: 50px 30px 25px;
+  }
+  .footer-content {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+ 
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .footer-left, .footer-center, .footer-right {
+    padding: 0;
+    min-width: 100%;
+  }
+
+  .footer-right {
+    justify-content: flex-start;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .footer-left p {
+    max-width: 100%;
+  }
+
+  .search-boxs {
+    width: 50%;
+  }
+ 
+}
+
+@media (max-width: 480px) {
+  .footer-left img,
+  .footer-right img {
+    height: 26px;
+    width: 29px;
+  }
+
+  .footer-left p {
+    font-size: 14px;
+  }
+
+  .footer-center li,
+  .footer-left .socials i {
+    font-size: 14px;
+  }
+
+  .footer-center li:first-child {
+    font-size: 15px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}
+
+  </style>
+</head>
+<body>
+     <div class="first-header">
+    <p>SOME IMPORTANT HIGHLIGHTED NEWS</p>
+  </div>
+ 
+
+  <header class="main-header">
+    <div class="header-top">
+     <div class="logo-social">
+         <a href="./index.html"><img src="./image/LOGO FOR Print.png" alt="Mining Discovery Logo" class="logo" /></a>
+      </div>
+      <button class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="nav-links" id="navMenu">
+        <a href="./about.html">About Us</a>
+        <a href="./newss.html">News Section</a>
+        <a href="./morning.html">Morning Chatter</a>
+        <a href="./magzin.html">Magazine</a>
+        <a href="./service.html">Services</a>
+        <a href="./contant.html">Contact Us</a>
+      </div>
+
+      <div class="header-buttons" id="headerButtons">
+    <a href="./sub-btn.html"><button class="login-btn">Login</button></a>
+       <a href="./sub.html"><button class="subscribe-btn">Subscribe</button></a> 
+      </div>
+    </div>
+
+    <div class="search-bar-container" id="searchContainer">
+      <div class="social-icons">
+        <img src="./image/Group.png">
+        <img src="./image/Group (4).png">
+       <img src="./image/Group (1).png">
+         <img src="./image/Group (2).png">
+           <img src="./image/Group (3).png">
+         
+        
+        
+      </div>
+<div class="search-bar-bg">
+  <div class="scrolling-track">
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <!-- Duplicate content for seamless loop -->
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+
+     <div class="search-box">
+    <input type="text" id="searchInput" placeholder=" " />
+    <div class="animated-text-container">
+      <span id="animatedText">Search gold prices</span>
+    </div>
+    <button class="search-icon"><i class="fas fa-search"></i></button>
+  </div>
+    </div>
+  </header>
+     
+  <!-- Header + Dropdown -->
+  <div class="topbar">
+    <h1 onclick="toggleDropdown()" id="newsToggle">
+      Services
+      <i class="fas fa-chevron-down"></i>
+    </h1>
+  </div>
+<!-- Dropdown Links -->
+   <div class="dropdown-links" id="dropdownMenu">
+    <a href="./service.html">Investor Campaigns</a>
+    <a href="./multimedia.html">Multimedia & you tube</a>
+    <a href="./newsynd.html">News Syndication</a>
+    <a href="./confrence.html">Conference Media Coverage</a>
+    <a href="./branding.html">Digital Branding</a>
+    <a href="./Global.html">Global Outreach</a>
+    <a href="./media.html">Social Media Growth
+</a>
+    <a href="./podcast.html">Podcast & Interview Features</a>
+    <a href="./letter.html">Newsletter & Email Blasts</a>
+    <a href="./paid.html">Paid Ad Campaigns</a>
+    <a href="./pressoffice.html">Press Office</a>
+  
+  
+</div>
+   
+  <div class="container">
+    <!-- Left Column -->
+    <div class="left-panel">
+      <div class="section">
+        <img src="./image/Untitled design (1).png" alt="Campaign Promo" />
+      </div>
+      <div class="section">
+        <img src="./image/mrngbanner.webp" alt="Ad Banner" />
+      </div>
+    </div>
+
+    <!-- Middle Column -->
+    <div class="middle-panel">
+      <div class="section">
+        <h1>Investor Campaigns</h1>
+        <hr style="width: 150px; border: 1px solid #c2922b; margin-bottom: 5px; margin-top: 5px;">
+        <div class="highlight-title">UNCOVER YOUR NEXT</div>
+        <h2>MINING DISCOVERY OPPORTUNITY</h2>
+
+       <p><span>Mining Discovery</span> offers exclusive access to groundbreaking mineral exploration ventures and early-stage discoveries. Our events and platforms are designed to connect forward-thinking investors, geologists, and industry leaders with companies at the forefront of mining innovation and resource development.<br></p>
+
+<p>Unlock the potential of the next major mining discovery by joining Mining Discovery. Our initiatives spotlight high-potential exploration companies and undiscovered resource opportunities from around the globe. Through curated meetings, discovery showcases, and direct access to technical teams, we ensure you gain deep insights into emerging prospects before they hit the mainstream.<br></p>
+
+<p>With advanced<span> exploration insights, regional geological data</span>, and discovery-focused networking, Mining Discovery maximizes your chances of identifying the next big mineral find—before the market catches on.
+Participation is free for qualified discovery investors who schedule a minimum of five meetings with exploration companies via the Mining Discovery Match Connect platform.</p>
+      </div>
+
+      <div class="section">
+        <h2>HOW WE HELP YOU</h2>
+         <hr style="width: 150px; border: 1px solid #c2922b; margin-bottom: 5px; margin-top: 5px;">
+        <p class="cap">DISCOVERY THE NEXT BIG MINING OPPORTUNITY...</p>
+        <p class="size">Explore by project stage, mineral type, location, and more via the Mining Discovery Connect platform, helping you identify the most 
+promising exploration ventures early.</p>
+        <div class="grid-2">
+          <div class="grid-item">
+            <div class="grid-icon">
+               <strong>CONFIRM INTEREST</strong>
+                  <hr style="width: 80px; border: 1px solid #c2922b; margin: 5px auto; ">
+              <img src="./image/users-confirm-profile-avatar-user-account_svgrepo.com.png" >
+            </div>
+           
+            <p class="change"> Once you confirm your participation in a Mining Discovery event, we’ll ask a few key questions about your exploration interests, mineral focus, and investment strategy - helping us connect you with the most relevant discovery-stage companies.</p>
+          </div>
+          <div class="grid-item">
+            <div class="grid-icon">
+               <strong>PROJECT MATCHING</strong>
+                <hr style="width: 80px; border: 1px solid #c2922b; margin: 5px auto; ">
+              <img src="./image/Vector (4).png">
+            </div>
+           
+            <p class="change">Our intelligent matchmaking engine recommends high-potential exploration companies aligned with your goals. You can also manually explore by commodity, geology, region, or project status giving you complete control over your discovery journey.</p>
+        </div>
+          <div class="grid-item">
+            <div class="grid-icon">
+               <strong>SCHEDULE DISCOVERY MEETINGS</strong>
+                <hr style="width: 80px; border: 1px solid #c2922b; margin: 5px auto; ">
+          <img src="./image/target-arrow_svgrepo.com.png">
+            </div>
+           
+            <p class="change">Our discovery concierge team will coordinate your one-on-one or small group meetings, ensuring a packed schedule with promising new ventures — before you even walk in the door.</p>
+         </div>
+          <div class="grid-item">
+            <div class="grid-icon">
+              <strong>EXPLORE INNOVATION</strong>
+               <hr style="width: 80px; border: 1px solid #c2922b; margin: 5px auto; ">
+              <img src="./image/Vector (5).png">
+            </div>
+            
+            <p class="change">Engage directly with exploration leaders, review field data and drill results, and gain insights through live presentations and face-to-face meetings in focused networking zones.</p>
+      </div>
+        </div>
+      </div>
+       <div class="heads" >
+    <h1>Brands we are working with</h1>
+    <hr style="width: 500px; border: 1px solid black; margin-bottom: 5px; margin-top: 5px;">
+   </div>
+     <div class="footer-slide">
+  <div class="row">
+    <img src="./image/Aurion.png" >
+    <img src="./image/ASTRA.png">
+    <img src="./image/phenom.png">
+    <img src="./image/image 2.png">
+   
+  </div>
+  <div class="row">
+    <img src="./image/DIGIPOWER X.png">
+    <img src="./image/logo recreation-01.png">
+    <img src="./image/loyalist icon black-04 1 (1).png">
+  
+  </div>
+  <div class="row">
+    <img src="./image/ARRAS 1.png">
+    <img src="./image/arizona  1.png">
+  
+  </div>
+</div>
+      
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-panel">
+      <div class="section">
+        <h2>Projects</h2>
+        <div class="card-list">
+          <div class="card">
+            <img src="./image/pexels-afterdark-31543888.png" alt="Project 1" />
+            <div class="card-text">Arizona news latest project</div>
+          </div>
+          <div class="card">
+            <img src="./image/pexels-hson-17126246.png" alt="Project 2" />
+            <div class="card-text">Astra news latest project</div>
+          </div>
+          <div class="card">
+            <img src="./image/pexels-urtimud-89-76108288-14263362 (1) 1.png" alt="Project 3" />
+            <div class="card-text">US Gold Crop, latest project</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Reports</h2>
+        <div class="card-list">
+          <div class="card">
+            <img src="./image/pexels-tomfisk-2101137.png" alt="Report 1" />
+            <div class="card-text">Phenom research report</div>
+          </div>
+        </div>
+         <div class="card-list">
+          <div class="card">
+            <img src="./image/0a11d81c2f8bf91d05c58c9bd53b0d3380afc2eb-2048x1536.jpg.png" alt="Report 1" />
+            <div class="card-text">Phenom research report</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="footer-container">
+    <div class="footers">
+       <img src="./discoverylogo.jpg" alt="Mining Discovery Logo"  height="70px" />
+    </div>
+    <div class="footer-content">
+
+     
+   
+      <!-- Left -->
+        
+      <div class="footer-left">
+       
+        <p>
+          Mining Discovery provides daily mining news, a weekly mining newsletter, a monthly mining magazine and an interactive mining website for mining companies, mining associations and mining executives globally.
+        </p>
+         <div class="search-bar-container-lasts" id="searchContainer">
+      <div class="social-iconss">
+        <img src="./image/Group.png" >
+        <img src="./image/Group (4).png">
+       <img src="./image/Group (1).png">
+         <img src="./image/Group (2).png">
+           <img src="./image/Group (3).png">
+      </div>
+
+      <div class="search-boxs">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button class="search-icon"><i class="fas fa-search"></i></button>
+      </div>
+       <div class="divider"></div>
+    </div>
+      </div>
+
+      <!-- Center -->
+      <div class="footer-center">
+        <ul>
+          <li>HOME</li>
+          <li>ABOUT US</li>
+          <li>MARKETING VIDEOS</li>
+          <li>SUBSCRIPTION</li>
+          <li>APPS</li>
+          <li>COMMENT GUIDELINE</li>
+          <li>LEGAL NOTICE</li>
+        </ul>
+      </div>
+
+    
+      
+     
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 Mining Discovery – Daily Mining Updates – Design by Mining Discovery.
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

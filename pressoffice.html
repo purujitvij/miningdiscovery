@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Press Office</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    .main-header {
+      background-color: #fff;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-social {
+      
+      padding-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding-left: 24px;
+    }
+
+    .logo {
+      height: 70px;
+      
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #8d6d2a;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .login-btn,
+    .subscribe-btn {
+      padding: 5px 15px;
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+
+    .login-btn {
+      background-color: #8d6d2a;
+    }
+
+    .subscribe-btn {
+      background-color: #000;
+    }
+
+   
+ .search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+}
+
+.search-bar-bg {
+  background-color: #2e2e2e;
+  height: 24px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  width: 70%;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-loop 8s linear infinite;
+      padding-top: 3px;
+}
+
+.scrolling-content {
+  display: flex;
+  white-space: nowrap;
+  color: white;
+  font-size: 14px;
+}
+
+.up {
+  color: #22ed00;
+}
+.down {
+  color: #ff0000;
+}
+
+@keyframes scroll-loop {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.search-box {
+      position: relative;
+      width: 174px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 25px;
+      padding: 5px 15px;
+      padding-right: 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Animated text */
+    .animated-text-container {
+      position: absolute;
+      left: 15px;
+      top: 30%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
+      font-size: 14px;
+      overflow: hidden;
+      height: 16px;
+    }
+
+    .animated-text-container span {
+      display: block;
+      animation: slideText 3s ease-in-out infinite;
+    }
+
+    @keyframes slideText {
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      10% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+    }
+
+    /* Hide animated text when user types */
+    .search-box input:focus + .animated-text-container,
+    .search-box input:not(:placeholder-shown) + .animated-text-container {
+      display: none;
+    }
+ 
+
+    .social-icons {
+      
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 32px;
+    
+      
+    }
+
+    .social-icons i {
+     background-color: black;
+      
+     
+      color: #8d6d2a;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #8d6d2a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links,
+      .header-buttons,
+      .search-bar-container {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        padding: 8px 0;
+      }
+
+      .mobile-active .nav-links,
+      .mobile-active .header-buttons,
+      .mobile-active .search-bar-container {
+        display: flex;
+        gap: 20px;
+      }
+
+      .search-box {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+
+      .social-icon {
+        margin-bottom: -20px;
+      }
+      .search-bar-bg {
+        width: 100%;
+      }
+    }
+
+/* === Header / Dropdown Toggle === */
+    .topbar {
+      background: #1f1f1f;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .topbar h1 i {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .topbar h1.rotate i {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-links {
+      display: none;
+      background: #1f1f1f;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 14px;
+      border-top: 1px solid #333;
+    }
+
+    .dropdown-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+
+    .dropdown-links a:hover,
+    .dropdown-links a.active {
+      color: gold;
+      border-bottom: 2px solid gold;
+      padding-bottom: 3px;
+    }
+
+    .dropdown-links.show {
+      display: flex;
+    }
+
+   
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    .container {
+      display: flex;
+      max-width: 1400px;
+      margin: auto;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .sidebar {
+      width: 20%;
+      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+    }
+
+    .sidebar img {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .sidebar p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .main {
+      width: 55%;
+    }
+
+    .main h2 {
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .card img {
+      width: 80px;
+      height: auto;
+    }
+
+    .card-content {
+      flex: 1;
+    }
+
+    .card-content h4 {
+      margin: 0 0 5px;
+    }
+
+    .card-content p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .card button {
+      background-color: #eee;
+      border: none;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    .right {
+      width: 25%;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .section-title h3 {
+      font-size: 18px;
+    }
+
+    .section-title button {
+      background-color: #eee;
+      border: none;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .project, .report {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      margin-bottom: 15px;
+    }
+
+    .project img, .report img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .project p, .report p {
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+/* =========================
+   Responsive Styles
+   ========================= */
+
+/* Tablet (max-width: 992px) */
+@media (max-width: 992px) {
+  .container {
+    flex-wrap: wrap;
+  }
+
+  .sidebar {
+    width: 30%;
+  }
+
+  .main {
+    width: 65%;
+  }
+
+  .right {
+    width: 100%;
+  }
+
+  .card {
+    flex-direction: row;
+  }
+}
+
+/* Mobile (max-width: 768px) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar,
+  .main,
+  .right {
+    width: 100%;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card img {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .section-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Small Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .card {
+    padding: 15px;
+  }
+
+  .card-content p,
+  .sidebar p,
+  .project p,
+  .report p {
+    font-size: 13px;
+  }
+
+  .section-title h3 {
+    font-size: 16px;
+  }
+
+  .section-title button {
+    font-size: 11px;
+  }
+}
+ 
+      .footer-container {
+  background-image: url(./image/footer-bg\ 1.png);
+  background-size: cover;
+  background-position: center;
+  padding: 60px 40px 30px;
+  color: #fff;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.divider {
+  width: 1px;
+  background: #444;
+  height: 60%;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1300px;
+  margin: auto;
+  gap: 30px;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 280px;
+  padding-right: 40px;
+}
+
+.footer-left img {
+  height: 60px;
+}
+
+.footer-left p {
+  font-size: 15px;
+  margin-top: 15px;
+  line-height: 2.0;
+  max-width: 500px;
+  color: #ddd;
+}
+
+.footer-left .socials {
+  margin-top: 20px;
+}
+
+.footer-left .socials i {
+  margin-right: 15px;
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-left .socials i:hover {
+  color: orange;
+}
+
+.footer-center {
+  min-width: 220px;
+  padding-left: 20px;
+}
+
+.footer-center ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-center li {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-center li:first-child {
+  font-weight: bold;
+  color: orange;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.footer-center li:hover {
+  color: orange;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 280px;
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.footer-right img {
+  height: 60px;
+  width: 100px;
+  object-fit: contain;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.footer-right img:hover {
+  transform: scale(1.05);
+}
+
+.search-boxs {
+  position: relative;
+  width: 180px;
+  margin-top: 20px;
+}
+
+.search-boxs input {
+  width: 100%;
+  height: 25px;
+  padding: 5px 15px;
+  padding-right: 35px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 39%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* -------- RESPONSIVE -------- */
+
+@media (max-width: 1024px) {
+  .footer-container {
+    padding: 50px 30px 25px;
+  }
+  .footer-content {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .footer-left, .footer-center, .footer-right {
+    padding: 0;
+    min-width: 100%;
+  }
+
+  .footer-right {
+    justify-content: flex-start;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .footer-left p {
+    max-width: 100%;
+  }
+
+  .search-boxs {
+    width: 50%;
+  }
+ 
+}
+
+@media (max-width: 480px) {
+  .footer-left img,
+  .footer-right img {
+    height: 50px;
+    width: 90px;
+  }
+
+  .footer-left p {
+    font-size: 14px;
+  }
+
+  .footer-center li,
+  .footer-left .socials i {
+    font-size: 14px;
+  }
+
+  .footer-center li:first-child {
+    font-size: 15px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}
+
+  </style>
+</head>
+<body>
+ <header class="main-header">
+    <div class="header-top">
+     <div class="logo-social">
+       <a href="./index.html"> <img src="./image/LOGO FOR Print.png" alt="Mining Discovery Logo" class="logo" />
+ </a> 
+      </div>
+      <button class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="nav-links" id="navMenu">
+        <a href="./about.html">About Us</a>
+        <a href="./newss.html">News Section</a>
+        <a href="./morning.html">Morning Chatter</a>
+        <a href="./magzin.html">Magazine</a>
+        <a href="./service.html">Services</a>
+        <a href="./contant.html">Contact Us</a>
+      </div>
+
+      <div class="header-buttons" id="headerButtons">
+    <a href="./sub-btn.html"><button class="login-btn">Login</button></a>
+       <a href="./sub.html"><button class="subscribe-btn">Subscribe</button></a> 
+      </div>
+    </div>
+
+    <div class="search-bar-container" id="searchContainer">
+      <div class="social-icons">
+        <img src="./image/Group.png">
+        <img src="./image/Group (4).png">
+       <img src="./image/Group (1).png">
+         <img src="./image/Group (2).png">
+           <img src="./image/Group (3).png">
+         
+        
+        
+      </div>
+<div class="search-bar-bg">
+  <div class="scrolling-track">
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <!-- Duplicate content for seamless loop -->
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+
+     <div class="search-box">
+    <input type="text" id="searchInput" placeholder=" " />
+    <div class="animated-text-container">
+      <span id="animatedText">Search gold prices</span>
+    </div>
+    <button class="search-icon"><i class="fas fa-search"></i></button>
+  </div>
+    </div>
+  </header>
+     <!-- Header + Dropdown -->
+  <div class="topbar">
+    <h1 onclick="toggleDropdown()" id="newsToggle">
+      Services
+      <i class="fas fa-chevron-down"></i>
+    </h1>
+  </div>
+
+  <!-- Dropdown Links -->
+ <div class="dropdown-links" id="dropdownMenu">
+    <a href="./service.html">Investor Campaigns</a>
+    <a href="./multimedia.html">Multimedia & you tube</a>
+    <a href="./newsynd.html">News Syndication</a>
+    <a href="./confrence.html">Conference Media Coverage</a>
+    <a href="./branding.html">Digital Branding</a>
+    <a href="./Global.html">Global Outreach</a>
+    <a href="./media.html">Social Media Growth
+</a>
+    <a href="./podcast.html">Podcast & Interview Features</a>
+    <a href="./letter.html">Newsletter & Email Blasts</a>
+    <a href="./paid.html">Paid Ad Campaigns</a>
+    <a href="./pressoffice.html">Press Office</a>
+  
+  
+</div>
+  <div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <img src="./image/image (2).png" alt="Gold District" />
+       <img src="./image/banner2.webp" alt="Gold District" />
+         <img src="./image/image (2).png" alt="Gold District" />
+     
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+      <h2>Press Office</h2>
+
+      <!-- Cards -->
+      <div class="card">
+        <img src="./image/phenom.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Phenom Resources</h4>
+         <p>Focused on gold and vanadium in Nevada, Phenom is led by a seasoned technical team with decades of combined experience and three patented processes for extracting vanadium and nickel. Their portfolio includes Carlin‑type gold targets alongside America’s largest strategic vanadium resource, positioning the company to capitalize on both precious metals and green-energy markets.</p>
+        </div>
+        <button>View More</button>
+      </div>
+
+      <div class="card">
+        <img src="./image/ASTRA.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Noble Plains Uranium Corp.</h4>
+         <p>A U.S.-based uranium exploration company developing ISR-compatible projects in states like Wyoming. Noble Plains upgrades historic uranium assets and quickly advances compliant NI 43‑101 resources. They aim to meet rising domestic uranium demand through capital-efficient, environmentally friendly In Situ Recovery operations.</p>
+        </div>
+        <button>View More</button>
+      </div>
+
+      <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/loyalist icon black-04 1.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Astra Exploration Inc.</h4>
+        <p>A U.S.-based uranium exploration company developing ISR-compatible projects in states like Wyoming. Noble Plains upgrades historic uranium assets and quickly advances compliant NI 43‑101 resources. They aim to meet rising domestic uranium demand through capital-efficient, environmentally friendly In Situ Recovery operations.</p>
+        </div>
+        <button>View More</button>
+      </div>
+        <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/download 1.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Loyalist Exploration Ltd.</h4>
+        <p>A U.S.-based uranium exploration company developing ISR-compatible projects in states like Wyoming. Noble Plains upgrades historic uranium assets and quickly advances compliant NI 43‑101 resources. They aim to meet rising domestic uranium demand through capital-efficient, environmentally friendly In Situ Recovery operations.</p>
+        </div>
+        <button>View More</button>
+      </div>
+        <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/LOGO FOR Print.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Mining Discovery</h4>
+       <p>As a digital platform and event organizer, Mining Discovery connects investors, explorers, and industry innovators. It provides tools for project matching, digital branding, and global networking—enabling early-stage mining ventures to reach investors and build momentum through curated showcases and partnerships.</p>
+        </div>
+        <button>View More</button>
+      </div>
+        <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/Aurion.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Power Metallic</h4>
+          <p>Power Metallic is a Canadian exploration company focused on developing the High-Grade Nickel-Copper-PGM-Gold-Silver Nisk project into potentially Canada's next polymetallic mine. Power Metallic is a Canadian exploration company focused on developing the High-Grade Nickel-Copper-PGM-Gold-Silver Nisk project into potentially Canada's next polymetallic mine.
+</p>
+        </div>
+        <button>View More</button>
+      </div>
+        <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/DIGIPOWER X.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Guanajuato Silver Company Ltd.</h4>
+         <p>Focused on reactivating precious metal mines in Mexico’s historically rich Guanajuato region, the company owns five mines and three production facilities. Its El Cubo Mine serves as the hub of a hub‑and‑spoke strategy centered in one of the world’s oldest silver camps. Operated by a fully Mexican management team.</p>
+        </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        
+        <div class="card-content">
+          <h4>Aurion Resources</h4>
+          <p>Aurion is a well-funded Canadian explorer in Finland’s Central Lapland Greenstone Belt. With proprietary gold discoveries at Risti and JVs with B2Gold, Kinross, and KoBold Metals, Aurion focuses on high-grade, near-surface prospects and critical mineral potential. Their Risti property alone includes meter-scale intercepts exceeding 789 g/t gold.</p>
+  </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        
+        <div class="card-content">
+          <h4>Gold Hunter Resources Inc</h4>
+          <p>Developing Newfoundland’s Great Northern Project—a consolidated district-scale gold zone spanning nearly 50 km. The company controls 18 known mineralized zones and benefits from supportive regional infrastructure and regulatory regimes. Its team has achieved previous success in delivering shareholder value through strategic district consolidation.</p>
+           </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        
+        <div class="card-content">
+          <h4>Digipower X</h4>
+          <p>With multiple sites, including our state-of-the-art combined cycle and high-capacity substations, we tap into and enhance the energy grid, supporting both industrial clients and broader energy markets.</p>
+         </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/ARRAS 1.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Arras Minerals Corp.</h4>
+          <p>A Canadian explorer focused on copper‑gold assets in northeastern Kazakhstan. Holding the third-largest license package in the country, Arras recently formed a alliance with Teck Resources, under which Teck will sole-fund a US$5 million generative exploration program. The company is undergoing extensive data collection (IP surveys, soil sampling, drilling) across the Elemes and Tay properties.</p>
+          </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/ARRAS 1.png" alt="Logo" />
+        <div class="card-content">
+          <h4>U.S Gold Corp</h4>
+          <p>Specializes in gold exploration and development across the United States, including the flagship CK Gold Project in Wyoming. CEO George Bee leads a team with extensive mine-building experience, and the company aims for permitting milestones and near-term production. Further projects include Keystone in Nevada and Challis in Idaho.</p>
+         </div>
+        <button>View More</button>
+      </div>
+       <div class="card" style="border: 2px solid #3399ff;">
+        <img src="./image/ARRAS 1.png" alt="Logo" />
+        <div class="card-content">
+          <h4>Arizona Gold & Silver Inc.</h4>
+          <p>Specializes in gold exploration and development across the United States, including the flagship CK Gold Project in Wyoming. CEO George Bee leads a team with extensive mine-building experience, and the company aims for permitting milestones and near-term production. Further projects include Keystone in Nevada and Challis in Idaho.</p>
+   </div>
+        <button>View More</button>
+      </div>
+
+      <!-- Add more cards similarly -->
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right">
+
+      <div class="section-title">
+        <h3>Projects</h3>
+        <button>More &gt;</button>
+      </div>
+
+      <div class="project">
+        <img src="./image/pexels-afterdark-31543888.png" alt="Project" />
+        <p>Arizona news latest project</p>
+      </div>
+
+      <div class="project">
+        <img src="./image/pexels-castorlystock-5139206 1.png" alt="Project" />
+        <p>Astra news latest project</p>
+      </div>
+
+      <div class="project">
+       <img src="./image/pexels-afterdark-31543888.png" alt="Project" />
+        <p>US Gold Corp. latest project</p>
+      </div>
+
+      <div class="section-title">
+        <h3>Reports</h3>
+        <button>More &gt;</button>
+      </div>
+
+      <div class="report">
+        <img src="./image/project1.jpg" alt="Report" />
+        <p>Phenom research report</p>
+      </div>
+    </div>
+  </div>
+ <!-- Footer Section -->
+  <div class="footer-container">
+    <div class="footer-content">
+
+     
+   
+      <!-- Left -->
+      <div class="footer-left">
+         <img src="./discoverylogo.jpg" alt="Mining Discovery Logo"  height="60px"/>
+        <p>
+          Mining Discovery provides daily mining news, a weekly mining newsletter,<br> a monthly mining magazine and an interactive mining website for mining<br> companies, mining associations and mining executives globally.
+        </p>
+         <div class="search-bar-container-last" id="searchContainer">
+      <div class="social-iconss">
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-x-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-youtube"></i>
+      </div>
+
+      <div class="search-boxs">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button class="search-icon"><i class="fas fa-search"></i></button>
+      </div>
+       <div class="divider"></div>
+    </div>
+      </div>
+
+      <!-- Center -->
+      <div class="footer-center">
+        <ul>
+          <li>HOME</li>
+          <li>ABOUT US</li>
+          <li>MARKETING VIDEOS</li>
+          <li>SUBSCRIPTION</li>
+          <li>APPS</li>
+          <li>COMMENT GUIDELINE</li>
+          <li>LEGAL NOTICE</li>
+        </ul>
+      </div>
+
+    
+      
+     
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 Mining Discovery – Daily Mining Updates – Design by Mining Discovery.
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

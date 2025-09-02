@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Global</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+ <style>
+
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+  color: #222;
+}
+    .main-header {
+      background-color: #fff;
+      padding: 12px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-social {
+      
+      padding-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding-left: 24px;
+    }
+
+    .logo {
+      height: 70px;
+      
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #8d6d2a;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .login-btn,
+    .subscribe-btn {
+      padding: 5px 15px;
+      border: none;
+      border-radius: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+
+    .login-btn {
+      background-color: #8d6d2a;
+    }
+
+    .subscribe-btn {
+      background-color: #000;
+    }
+
+   
+ .search-bar-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  
+}
+
+.search-bar-bg {
+  background-color: #2e2e2e;
+  height: 24px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+  width: 70%;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-loop 8s linear infinite;
+      padding-top: 3px;
+}
+
+.scrolling-content {
+  display: flex;
+  white-space: nowrap;
+  color: white;
+  font-size: 14px;
+}
+
+.up {
+  color: #22ed00;
+}
+.down {
+  color: #ff0000;
+}
+
+@keyframes scroll-loop {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+.search-box {
+      position: relative;
+      width: 174px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 25px;
+      padding: 5px 15px;
+      padding-right: 35px;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Animated text */
+    .animated-text-container {
+      position: absolute;
+      left: 15px;
+      top: 30%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #999;
+      font-size: 14px;
+      overflow: hidden;
+      height: 16px;
+    }
+
+    .animated-text-container span {
+      display: block;
+      animation: slideText 3s ease-in-out infinite;
+    }
+
+    @keyframes slideText {
+      0% {
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      10% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      50% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+    }
+
+    /* Hide animated text when user types */
+    .search-box input:focus + .animated-text-container,
+    .search-box input:not(:placeholder-shown) + .animated-text-container {
+      display: none;
+    }
+ 
+
+    .social-icons {
+      
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 32px;
+    
+      
+    }
+
+    .social-icons i {
+     background-color: black;
+      
+     
+      color: #8d6d2a;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #8d6d2a;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links,
+      .header-buttons,
+      .search-bar-container {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-top: 10px;
+      }
+
+      .nav-links a {
+        padding: 8px 0;
+      }
+
+      .mobile-active .nav-links,
+      .mobile-active .header-buttons,
+      .mobile-active .search-bar-container {
+        display: flex;
+        gap: 20px;
+      }
+
+      .search-box {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .search-box input {
+        width: 100%;
+      }
+
+      .social-icon {
+        margin-bottom: -20px;
+      }
+      .search-bar-bg {
+        width: 100%;
+      }
+    }
+
+
+/* === Header / Dropdown Toggle === */
+    .topbar {
+      background: #1f1f1f;
+      color: #fff;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .topbar h1 {
+      font-size: 20px;
+      font-weight: normal;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .topbar h1 i {
+      font-size: 12px;
+      transition: transform 0.3s ease;
+    }
+
+    .topbar h1.rotate i {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-links {
+      display: none;
+      background: #1f1f1f;
+      padding: 10px 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 14px;
+      border-top: 1px solid #333;
+    }
+
+    .dropdown-links a {
+      color: #ccc;
+      text-decoration: none;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+
+    .dropdown-links a:hover,
+    .dropdown-links a.active {
+      color: gold;
+      border-bottom: 2px solid gold;
+      padding-bottom: 3px;
+    }
+
+    .dropdown-links.show {
+      display: flex;
+    }
+
+   
+
+
+
+
+
+
+
+    
+
+
+
+.container {
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+  
+}
+
+.subtext {
+  color: #c2922b;
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.left-panel,
+.middle-panel,
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.left-panel,
+.right-panel {
+  width: 22%;
+}
+
+.middle-panel {
+  width: 53%;
+}
+
+.left-panel img,
+.right-panel img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.middle-panel h1 {
+  font-size: 24px;
+  color: #000;
+  margin-bottom: 10px ;
+  border-bottom: 2px solid #AC8A4A ;
+  
+  
+}
+
+.top-cards {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  padding: 20px;
+  width: 48%;
+  background: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+  text-align: center;
+  font-size: 12px;
+  padding-bottom: 10px;
+}
+.card p{
+  font-size: 12px;
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.section-title {
+  text-align: center;
+  font-weight: bold;
+  color: #c2922b;
+  font-size: 16px;
+  margin: 30px 0 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.hello {
+  font-size: 10px;
+  color: black;
+  font-weight: normal;
+}
+
+.solution-grid {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.solution-grid div {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+  min-width: 100px;
+}
+
+.solution-grid i {
+  color: #c2922b;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.philosophy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.philosophy div {
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.color {
+  background-color: #AC8A4A;
+}
+
+.black {
+  background-color: black;
+  color: white;
+}
+
+.chnage {
+  color: #c2922b;
+}
+
+span {
+  color: #c2922b;
+}
+
+/* ---------------- RESPONSIVE STYLES ---------------- */
+
+/* Tablet (max-width: 991px) */
+@media (max-width: 991px) {
+  .container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .left-panel,
+  .right-panel,
+  .middle-panel {
+    width: 100%;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .philosophy {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile (max-width: 576px) */
+@media (max-width: 576px) {
+  .middle-panel h1 {
+    font-size: 20px;
+    text-align: center;
+        border-bottom: 2px solid black;
+  }
+
+  .subtext {
+    font-size: 12px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .card {
+    font-size: 11px;
+  }
+
+  .solution-grid {
+    flex-direction: column;
+  }
+
+  .solution-grid div {
+    width: 100%;
+  }
+}
+
+  .footer-container {
+  background-image: url(./image/footer-bg\ 1.png);
+  background-size: cover;
+  background-position: center;
+  padding: 60px 40px 30px;
+  color: #fff;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.divider {
+  width: 1px;
+  background: #444;
+  height: 60%;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 1300px;
+  margin: auto;
+  gap: 30px;
+}
+
+.footer-left {
+  flex: 1;
+  min-width: 280px;
+  padding-right: 40px;
+}
+
+.footer-left img {
+  height: 60px;
+}
+
+.footer-left p {
+  font-size: 15px;
+  margin-top: 15px;
+  line-height: 2.0;
+  max-width: 500px;
+  color: #ddd;
+}
+
+.footer-left .socials {
+  margin-top: 20px;
+}
+
+.footer-left .socials i {
+  margin-right: 15px;
+  font-size: 20px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-left .socials i:hover {
+  color: orange;
+}
+
+.footer-center {
+  min-width: 220px;
+  padding-left: 20px;
+}
+
+.footer-center ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-center li {
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.footer-center li:first-child {
+  font-weight: bold;
+  color: orange;
+  font-size: 16px;
+  margin-bottom: 18px;
+}
+
+.footer-center li:hover {
+  color: orange;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 280px;
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.footer-right img {
+  height: 60px;
+  width: 100px;
+  object-fit: contain;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.footer-right img:hover {
+  transform: scale(1.05);
+}
+
+.search-boxs {
+  position: relative;
+  width: 180px;
+  margin-top: 20px;
+}
+
+.search-boxs input {
+  width: 100%;
+  height: 25px;
+  padding: 5px 15px;
+  padding-right: 35px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 39%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #aaa;
+}
+
+/* -------- RESPONSIVE -------- */
+
+@media (max-width: 1024px) {
+  .footer-container {
+    padding: 50px 30px 25px;
+  }
+  .footer-content {
+    gap: 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+  }
+
+  .footer-left, .footer-center, .footer-right {
+    padding: 0;
+    min-width: 100%;
+  }
+
+  .footer-right {
+    justify-content: flex-start;
+  }
+
+  .divider {
+    display: none;
+  }
+
+  .footer-left p {
+    max-width: 100%;
+  }
+
+  .search-boxs {
+    width: 50%;
+  }
+ 
+}
+
+@media (max-width: 480px) {
+  .footer-left img,
+  .footer-right img {
+    height: 50px;
+    width: 90px;
+  }
+
+  .footer-left p {
+    font-size: 14px;
+  }
+
+  .footer-center li,
+  .footer-left .socials i {
+    font-size: 14px;
+  }
+
+  .footer-center li:first-child {
+    font-size: 15px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+    margin-top: 30px;
+  }
+}
+
+
+
+ </style>
+</head>
+<body>
+ 
+  <header class="main-header">
+    <div class="header-top">
+     <div class="logo-social">
+        <img src="./image/LOGO FOR Print.png" alt="Mining Discovery Logo" class="logo" />
+      </div>
+      <button class="hamburger" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <div class="nav-links" id="navMenu">
+        <a href="./about.html">About Us</a>
+        <a href="./newss.html">News Section</a>
+        <a href="./morning.html">Morning Chatter</a>
+        <a href=".//miningpage/index.html">Magazine</a>
+        <a href="./service.html">Services</a>
+        <a href="./contant.html">Contact Us</a>
+      </div>
+
+      <div class="header-buttons" id="headerButtons">
+    <a href="./sub-btn.html"><button class="login-btn">Login</button></a>
+        <button class="subscribe-btn">Subscribe</button>
+      </div>
+    </div>
+
+    <div class="search-bar-container" id="searchContainer">
+      <div class="social-icons">
+        <img src="./image/Group.png">
+        <img src="./image/Group (4).png">
+       <img src="./image/Group (1).png">
+         <img src="./image/Group (2).png">
+           <img src="./image/Group (3).png">
+         
+        
+        
+      </div>
+<div class="search-bar-bg">
+  <div class="scrolling-track">
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+    <!-- Duplicate content for seamless loop -->
+    <div class="scrolling-content">
+      <span>Gold (Au) $3,378/oz <span class="down">-0.36%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Silver (Ag) $28.34/oz <span class="up">+0.45%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Copper (Cu) $4.12/lb <span class="down">-0.12%</span> &nbsp;&nbsp;&nbsp;</span>
+      <span>Platinum (Pt) $1,085/oz <span class="up">+0.87%</span> &nbsp;&nbsp;&nbsp;</span>
+    </div>
+  </div>
+</div>
+
+
+     <div class="search-box">
+    <input type="text" id="searchInput" placeholder=" " />
+    <div class="animated-text-container">
+      <span id="animatedText">Search gold prices</span>
+    </div>
+    <button class="search-icon"><i class="fas fa-search"></i></button>
+  </div>
+    </div>
+  </header>
+    <!-- Header + Dropdown -->
+  <div class="topbar">
+    <h1 onclick="toggleDropdown()" id="newsToggle">
+      Services
+      <i class="fas fa-chevron-down"></i>
+    </h1>
+  </div>
+
+<!-- Dropdown Links -->
+ <div class="dropdown-links" id="dropdownMenu">
+    <a href="./service.html">Investor Campaigns</a>
+    <a href="./multimedia.html">Multimedia & you tube</a>
+    <a href="./newsynd.html">News Syndication</a>
+    <a href="./confrence.html">Conference Media Coverage</a>
+    <a href="./branding.html">Digital Branding</a>
+    <a href="./Global.html">Global Outreach</a>
+    <a href="./media.html">Social Media Growth
+</a>
+    <a href="./podcast.html">Podcast & Interview Features</a>
+    <a href="./letter.html">Newsletter & Email Blasts</a>
+    <a href="./paid.html">Paid Ad Campaigns</a>
+    <a href="./pressoffice.html">Press Office</a>
+  
+  
+</div>
+
+  <div class="container">
+    
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <img src="./image/mrngbanner2.webp" alt="left-1">
+      <img src="./image/mrngbanner.webp" alt="left-2">
+      <img src="./image/Untitled design (1).png" alt="left-3">
+    
+    </div>
+
+    <!-- Middle Panel -->
+    <div class="middle-panel">
+      <h1>Global Outreach</h1>
+      <p class="subtext">Connecting the Future of Mineral Exploration</p>
+
+      <div class="top-cards">
+        <div class="card">
+        <p>At Mining Discovery, we’re all about creating meaningful connections across the mining world. Through our Global Outreach initiative, we bring together exploration companies, tech innovators, policymakers, and industry groups to promote smarter, more sustainable discovery practices.</p>
+
+<p>We’re building regional and digital networks that support early-stage projects, making it easier for them to gain global visibility and investor attention. </p>
+
+<p>Our “100 Game-Changers in Mining” spotlight series highlights the pioneers and bold ideas shaping the future of mineral exploration. Plus, with our curated events calendar and #DiscoveryVoices speaker platform, we help ensure the brightest minds in the industry are heard on the biggest stages.</p> 
+
+<p>Whether you’re looking for the next big discovery or a way to connect with forward-thinking partners, Mining Discovery is where it all comes together.</p>
+          
+        </div>
+       
+        <div class="card">
+         <img src="./image/pexels-olly-3754686 1.png">
+        
+        </div>
+      </div>
+
+      <div class="section-title">
+     
+
+      </div>
+      <div class="solution-grid">
+        <div class="image-size">
+            <img src="./image/ChatGPT Image Jul 31, 2025, 11_03_48 AM 1.png"></i>
+      </div>
+        <div><img src="./image/ChatGPT Image Jul 31, 2025, 11_03_48 AM 2.png">
+         
+        </div>
+        <div><img src="./image/ChatGPT Image Jul 31, 2025, 11_03_48 AM 3.png">
+</div>
+       
+       
+      </div>
+
+      
+
+      
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <div class="section-title">Projects</div>
+      <img src="./image/pexels-afterdark-31543888.png" alt="project-1">
+      <img src="./image/ann1.png" alt="project-2">
+
+      <div class="section-title">Reports</div>
+      <img src="./image/ann4.png" alt="report-1">
+      <img src="./image/ann2.png" alt="report-2">
+    </div>
+
+  </div>
+  <!-- Footer Section -->
+  <div class="footer-container">
+    <div class="footer-content">
+
+     
+   
+      <!-- Left -->
+      <div class="footer-left">
+         <img src="./discoverylogo.jpg" alt="Mining Discovery Logo"  height="60px"/>
+        <p>
+          Mining Discovery provides daily mining news, a weekly mining newsletter,<br> a monthly mining magazine and an interactive mining website for mining<br> companies, mining associations and mining executives globally.
+        </p>
+         <div class="search-bar-container-last" id="searchContainer">
+      <div class="social-iconss">
+        <i class="fab fa-linkedin"></i>
+        <i class="fab fa-x-twitter"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-youtube"></i>
+      </div>
+
+      <div class="search-boxs">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button class="search-icon"><i class="fas fa-search"></i></button>
+      </div>
+       <div class="divider"></div>
+    </div>
+      </div>
+
+      <!-- Center -->
+      <div class="footer-center">
+        <ul>
+          <li>HOME</li>
+          <li>ABOUT US</li>
+          <li>MARKETING VIDEOS</li>
+          <li>SUBSCRIPTION</li>
+          <li>APPS</li>
+          <li>COMMENT GUIDELINE</li>
+          <li>LEGAL NOTICE</li>
+        </ul>
+      </div>
+
+    
+      
+     
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 Mining Discovery – Daily Mining Updates – Design by Mining Discovery.
+    </div>
+  </div>
+  <script src="./script.js"></script>
+</body>
+</html>

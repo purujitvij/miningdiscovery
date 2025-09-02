@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Play – Brain Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff;--fg:#0b0b0c;--muted:#6b7280;--brand:#ff6a00;--card:#f6f7f9;--line:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+    header{position:sticky;top:0;background:#fff;z-index:20;border-bottom:1px solid var(--line)}
+    .wrap{max-width:1200px;margin:auto;padding:16px}
+    .topbar{display:flex;align-items:center;gap:16px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+    .brand .dot{width:10px;height:10px;border-radius:99px;background:var(--brand)}
+    .search{flex:1;display:flex;justify-content:center}
+    .search input{width:100%;max-width:520px;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .tab{padding:8px 12px;border:1px solid var(--line);border-radius:999px;font-size:14px;color:#111}
+    .tab.active{background:var(--fg);color:#fff;border-color:var(--fg)}
+
+    .hero{padding:24px 0;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#ffffff, #fafafa)}
+    .hero h1{font-size:28px;margin:4px 0 10px}
+    .hero p{color:var(--muted);margin:0}
+
+    .grid{display:grid;gap:16px;padding:24px 0;grid-template-columns:repeat(4,1fr)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+    .thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#ffe8d6,#f1f5f9);display:grid;place-items:center;font-weight:700}
+    .thumb span{border:2px dashed #ffb27a;padding:10px 12px;border-radius:12px}
+    .body{padding:14px}
+    .title{font-weight:600}
+    .desc{font-size:13px;color:var(--muted);margin-top:6px}
+    .actions{display:flex;gap:10px;padding:12px;border-top:1px solid var(--line);margin-top:auto}
+    .btn{flex:1;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer}
+    .btn.play{background:var(--fg);color:#fff;border-color:var(--fg)}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.66);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+    .modal.open{display:flex}
+    .panel{width:100%;max-width:980px;max-height:90vh;background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+    .panel header{position:relative;border:none}
+    .panel .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
+    .panel h3{margin:0;font-size:18px}
+    .panel .close{border:none;background:transparent;font-size:22px;cursor:pointer}
+    #gameArea{flex:1;overflow:auto;background:#fff}
+    .pad{padding:16px}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap;padding:8px 16px;border-bottom:1px solid var(--line);background:#fafafa}
+    .toolbar .tbtn{padding:8px 10px;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer}
+
+    /* Responsive */
+    @media (max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:820px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .hero h1{font-size:24px}
+    }
+    @media (max-width:540px){
+      .grid{grid-template-columns:1fr}
+      .search{display:none}
+      .hero{padding:16px 0}
+    }
+
+    /* Shared small styles for games */
+    canvas{display:block;margin:auto;max-width:100%}
+    .center{display:grid;place-items:center}
+    .inline{display:inline-block}
+    .kbd{font:14px/1.2 monospace;background:#111;color:#fff;padding:2px 6px;border-radius:6px}
+    .row{display:flex;gap:8px;align-items:center}
+    .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-size:12px;background:#fff}
+    .hint{color:var(--muted);font-size:12px}
+    .grid-mini{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .cell{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;cursor:pointer}
+    .ok{background:#d1fadf;border-color:#34d399}
+    .bad{background:#fee2e2;border-color:#ef4444}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="topbar">
+        <div class="brand"><span class="dot"></span> Your News — Games</div>
+        <div class="search"><input placeholder="Search games…" id="search"></div>
+        <nav class="tabs" aria-label="filters">
+          <button class="tab active" data-filter="all">All</button>
+          <button class="tab" data-filter="logic">Logic</button>
+          <button class="tab" data-filter="speed">Speed</button>
+          <button class="tab" data-filter="memory">Memory</button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="wrap">
+      <h1>Play Brain Games</h1>
+      <p>20 lightweight, distraction‑free games. Fully responsive. Perfect for a news site audience.</p>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <div id="grid" class="grid"></div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="gameTitle">
+    <div class="panel">
+      <div class="bar">
+        <h3 id="gameTitle">Game</h3>
+        <div class="row">
+          <button class="tbtn pill" id="restartBtn">↻ Restart</button>
+          <button class="close" id="closeBtn" aria-label="Close">✕</button>
+        </div>
+      </div>
+      <div id="gameArea"></div>
+    </div>
+  </div>
+
+<script>
+// ---------- Utility ----------
+const el = (sel, ctx=document)=>ctx.querySelector(sel);
+const els = (sel, ctx=document)=>Array.from(ctx.querySelectorAll(sel));
+function modal(open, title){ const m = el('#modal'); m.classList.toggle('open', !!open); el('#gameTitle').textContent=title||''; if(!open){el('#gameArea').innerHTML=''; current=null;} }
+function rand(n){ return Math.floor(Math.random()*n); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=rand(i+1); [a[i],a[j]]=[a[j],a[i]];} return a; }
+
+// ---------- Game Registry ----------
+const games = [
+  {id:'ttt',name:'Tic Tac Toe',cat:'logic',desc:'Classic 3×3 strategy.', init:initTTT},
+  {id:'memory',name:'Memory Match',cat:'memory',desc:'Flip and match pairs.', init:initMemory},
+  {id:'snake',name:'Snake',cat:'speed',desc:'Eat, grow, avoid walls.', init:initSnake},
+  {id:'rps',name:'Rock–Paper–Scissors',cat:'logic',desc:'Beat the computer.', init:initRPS},
+  {id:'guess',name:'Number Guess',cat:'logic',desc:'Guess 1–100 smartly.', init:initGuess},
+  {id:'reaction',name:'Reaction Test',cat:'speed',desc:'Tap when green.', init:initReaction},
+  {id:'typing',name:'Typing Speed',cat:'speed',desc:'Type the quote fast.', init:initTyping},
+  {id:'whack',name:'Whack‑a‑Mole',cat:'speed',desc:'Tap moles quickly.', init:initWhack},
+  {id:'simon',name:'Simon Sequence',cat:'memory',desc:'Repeat the pattern.', init:initSimon},
+  {id:'hang',name:'Hangman',cat:'memory',desc:'Guess the hidden word.', init:initHangman},
+  {id:'2048',name:'2048',cat:'logic',desc:'Merge tiles to 2048.', init:init2048},
+  {id:'slide',name:'15‑Puzzle',cat:'logic',desc:'Arrange 1–15 in order.', init:initSlide},
+  {id:'connect4',name:'Connect Four',cat:'logic',desc:'Make a line of 4.', init:initConnect4},
+  {id:'pong',name:'Pong',cat:'speed',desc:'Paddle vs CPU.', init:initPong},
+  {id:'breakout',name:'Breakout',cat:'speed',desc:'Smash all bricks.', init:initBreakout},
+  {id:'flappy',name:'Flappy Square',cat:'speed',desc:'Tap to fly.', init:initFlappy},
+  {id:'maze',name:'Mini Maze',cat:'logic',desc:'Find the exit.', init:initMaze},
+  {id:'word',name:'Word Scramble',cat:'memory',desc:'Unscramble the word.', init:initWordScramble},
+  {id:'math',name:'Quick Math',cat:'speed',desc:'Solve rapid sums.', init:initMathQuiz},
+  {id:'aim',name:'Aim Trainer',cat:'speed',desc:'Click targets fast.', init:initAim}
+,
+  {id:'sudoku',name:'Mini Sudoku',cat:'logic',desc:'Fill 1–4 without repeats.', init:initSudoku},
+  {id:'mines',name:'Minesweeper',cat:'logic',desc:'Avoid the mines.', init:initMines},
+  {id:'lights',name:'Lights Out',cat:'logic',desc:'Toggle all lights off.', init:initLights},
+  {id:'master',name:'Mastermind',cat:'logic',desc:'Crack the 4‑peg code.', init:initMastermind},
+  {id:'nonogram',name:'Nonogram 5×5',cat:'logic',desc:'Paint by clues.', init:initNonogram},
+  {id:'reversi',name:'Reversi 6×6',cat:'logic',desc:'Flip to dominate.', init:initReversi},
+  {id:'hanoi',name:'Towers of Hanoi',cat:'logic',desc:'Move 4 discs in order.', init:initHanoi},
+  {id:'tetris',name:'Tetris Mini',cat:'speed',desc:'Stack falling blocks.', init:initTetris},
+  {id:'bubbles',name:'Bubble Pop',cat:'speed',desc:'Click moving bubbles.', init:initBubbles},
+  {id:'nqueens',name:'4‑Queens',cat:'logic',desc:'Place 4 queens safely.', init:initNQueens}
+];
+
+// ---------- Render Grid ----------
+const grid = el('#grid');
+function render(list){
+  grid.innerHTML = list.map(g=>`
+    <article class="card" data-id="${g.id}" data-cat="${g.cat}">
+      <div class="thumb"><span>${g.name}</span></div>
+      <div class="body">
+        <div class="title">${g.name}</div>
+        <div class="desc">${g.desc}</div>
+      </div>
+      <div class="actions">
+        <button class="btn play">Play Now</button>
+      </div>
+    </article>
+  `).join('');
+}
+render(games);
+
+// Filters & search
+els('.tab').forEach(t=>t.onclick=()=>{ els('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); const f=t.dataset.filter; const list = f==='all'?games:games.filter(g=>g.cat===f); render(list); attachCardHandlers(); });
+el('#search').addEventListener('input', e=>{ const q=e.target.value.toLowerCase(); const list=games.filter(g=>g.name.toLowerCase().includes(q)); render(list); attachCardHandlers(); });
+
+function attachCardHandlers(){ els('.card .play', grid).forEach(btn=>btn.onclick=()=>{ const id=btn.closest('.card').dataset.id; const g=games.find(x=>x.id===id); current=g; g.init(); modal(true, g.name); }); }
+attachCardHandlers();
+
+el('#closeBtn').onclick=()=>modal(false);
+el('#restartBtn').onclick=()=>{ if(current){ current.init(); } };
+let current=null;
+
+// ---------- GAMES IMPLEMENTATIONS (compact) ----------
+
+// 1) Tic Tac Toe
+function initTTT(){
+  const root = mkArea(`<div class='pad center'><div id='board' class='grid-mini' style='grid-template-columns:repeat(3,1fr);width:320px'>${'<div class="cell" data-i></div>'.repeat(9)}</div><p class='hint' id='msg'></p></div>`);
+  const cells=els('[data-i]',root); let x=true; let a=Array(9).fill(''); const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  function win(p){return lines.some(l=>l.every(i=>a[i]===p));}
+  function over(){return a.every(Boolean)}
+  cells.forEach((c,i)=>c.onclick=()=>{ if(a[i])return; a[i]=x?'X':'O'; c.textContent=a[i]; c.classList.add('ok'); if(win(a[i])){ el('#msg',root).textContent=a[i]+" wins"; cells.forEach(c=>c.style.pointerEvents='none');return;} if(over()){el('#msg',root).textContent='Draw';} x=!x; if(!x) ai(); });
+  function ai(){ // naive
+    const empty=a.map((v,i)=>v?null:i).filter(v=>v!==null); const i=empty[rand(empty.length)]; a[i]='O'; cells[i].textContent='O'; cells[i].classList.add('bad'); if(win('O')){ el('#msg',root).textContent='O wins'; cells.forEach(c=>c.style.pointerEvents='none'); } x=true; }
+}
+
+// 2) Memory Match (8 cards = 4 pairs)
+function initMemory(){
+  const icons=['🍎','🍌','🍇','🍉']; const deck=shuffle([...icons,...icons]);
+  const root = mkArea(`<div class='pad center'><div class='grid-mini' id='g'></div><p class='hint'>Flip to match pairs.</p></div>`);
+  const g=el('#g',root); deck.forEach((v,i)=>{ const d=document.createElement('div'); d.className='cell'; d.textContent='❔'; d.dataset.v=v; g.appendChild(d); });
+  let open=[], lock=false, matched=0; g.onclick=e=>{const c=e.target.closest('.cell'); if(!c||lock||c.classList.contains('ok'))return; c.textContent=c.dataset.v; c.classList.add('ok'); open.push(c); if(open.length===2){ lock=true; setTimeout(()=>{ if(open[0].dataset.v!==open[1].dataset.v){ open.forEach(x=>{x.textContent='❔'; x.classList.remove('ok');}); } else { matched+=2; if(matched===deck.length){ alert('You win!'); } } open=[]; lock=false; },600);} };
+}
+
+// 3) Snake
+function initSnake(){
+  const root = mkArea(`<div class='pad'><canvas id='cv' width='420' height='420'></canvas><p class='hint'>Use <span class='kbd'>WASD</span> or arrows.</p></div>`);
+  const c=el('#cv',root); const ctx=c.getContext('2d'); const n=14, s=c.width/n; let dir=1, snake=[[7,7]], food=[rand(n),rand(n)], dead=false, speed=130, score=0;
+  function draw(){ ctx.clearRect(0,0,c.width,c.height); ctx.strokeStyle='#e5e7eb'; for(let i=1;i<n;i++){ ctx.beginPath(); ctx.moveTo(i*s,0); ctx.lineTo(i*s,c.height); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0,i*s); ctx.lineTo(c.width,i*s); ctx.stroke(); }
+    ctx.fillStyle='#111'; snake.forEach(([x,y])=>ctx.fillRect(x*s+2,y*s+2,s-4,s-4));
+    ctx.fillStyle='#ff6a00'; ctx.fillRect(food[0]*s+4,food[1]*s+4,s-8,s-8);
+  }
+  function step(){ if(dead) return; const h=snake[0].slice(); if(dir===0)h[1]--; if(dir===1)h[0]++; if(dir===2)h[1]++; if(dir===3)h[0]--; if(h[0]<0||h[1]<0||h[0]>=n||h[1]>=n||snake.some(p=>p[0]===h[0]&&p[1]===h[1])){dead=true; alert('Game over. Score '+score); return;} snake.unshift(h); if(h[0]===food[0]&&h[1]===food[1]){ score++; food=[rand(n),rand(n)]; } else snake.pop(); draw(); setTimeout(step, Math.max(70, speed- score*3)); }
+  draw(); step();
+  window.onkeydown=(e)=>{ const k=e.key; if(['ArrowUp','w','W'].includes(k))dir=0; if(['ArrowRight','d','D'].includes(k))dir=1; if(['ArrowDown','s','S'].includes(k))dir=2; if(['ArrowLeft','a','A'].includes(k))dir=3; };
+}
+
+// 4) Rock Paper Scissors
+function initRPS(){
+  const root=mkArea(`<div class='pad center'><div class='row'><button class='tbtn' data='rock'>🗿 Rock</button><button class='tbtn' data='paper'>📄 Paper</button><button class='tbtn' data='scissors'>✂️ Scissors</button></div><p id='out' class='hint'></p></div>`);
+  const map={rock:'scissors',paper:'rock',scissors:'paper'}; els('button',root).forEach(b=>b.onclick=()=>{ const u=b.getAttribute('data'); const choices=Object.keys(map); const ai=choices[rand(3)]; let res='Draw'; if(map[u]===ai)res='You win'; else if(map[ai]===u)res='You lose'; el('#out',root).textContent=`You: ${u} | AI: ${ai} → ${res}`; });
+}
+
+// 5) Number Guess
+function initGuess(){
+  const n=1+rand(100); const root=mkArea(`<div class='pad center'><div class='row'><input id='in' placeholder='1–100' style='padding:10px;border:1px solid #e5e7eb;border-radius:8px;width:140px'><button class='tbtn' id='go'>Guess</button></div><p id='o' class='hint'>Try to guess the hidden number.</p></div>`);
+  el('#go',root).onclick=()=>{ const v=parseInt(el('#in',root).value,10); if(!v)return; if(v===n) el('#o',root).textContent='Correct!'; else el('#o',root).textContent=v<n?'Higher…':'Lower…'; };
+}
+
+// 6) Reaction
+function initReaction(){
+  const root=mkArea(`<div class='pad center'><div id='box' class='cell' style='width:260px;height:160px;display:grid;place-items:center;font-weight:600'>Wait for green…</div><p class='hint' id='h'></p></div>`);
+  let start,timeout;
+  const box=el('#box',root);
+  function arm(){ box.textContent='Wait for green…'; box.style.background='#fee2e2'; timeout=setTimeout(()=>{ box.style.background='#d1fadf'; box.textContent='GO!'; start=performance.now(); }, 900+rand(1500)); }
+  box.onclick=()=>{ if(!start){ clearTimeout(timeout); box.textContent='Too soon!'; setTimeout(arm,800); } else { const t=Math.round(performance.now()-start); box.textContent=t+' ms'; el('#h',root).textContent='Click to try again'; start=null; setTimeout(arm,900); } };
+  arm();
+}
+
+// 7) Typing
+function initTyping(){
+  const quotes=['News shapes nations','Breaking stories matter','Truth needs clarity','Swift minds type fast'];
+  const q=quotes[rand(quotes.length)];
+  const root=mkArea(`<div class='pad'><p class='hint'>Type the text below as fast as you can.</p><div class='cell' style='margin:10px 0'>${q}</div><input id='t' class='cell' style='width:100%' placeholder='Start typing…'><p id='o' class='hint'></p></div>`);
+  let start=null; const t=el('#t',root);
+  t.oninput=()=>{ if(!start) start=performance.now(); if(t.value===q){ const s=Math.round((q.length/5)/((performance.now()-start)/60000)); el('#o',root).textContent='WPM: '+s; } };
+}
+
+// 8) Whack‑a‑Mole
+function initWhack(){
+  const root=mkArea(`<div class='pad center'><div class='grid-mini' id='holes' style='grid-template-columns:repeat(3,1fr);width:360px'></div><p class='hint'>Tap the mole. Score <span id='sc'>0</span></p></div>`);
+  const holes=el('#holes',root); for(let i=0;i<9;i++){ const d=document.createElement('div'); d.className='cell'; holes.appendChild(d); }
+  let score=0, pos=-1, alive=true; function tick(){ if(!alive) return; els('.cell',holes).forEach((c,i)=>{ c.textContent = i===pos?'🐹':''; c.onclick=()=>{ if(i===pos){ score++; el('#sc',root).textContent=score; pos=-1; } }; }); pos=rand(9); setTimeout(tick, 700); } tick();
+}
+
+// 9) Simon
+function initSimon(){
+  const root=mkArea(`<div class='pad center'><div id='board' class='grid-mini' style='grid-template-columns:repeat(2,1fr);width:260px'></div><p class='hint'>Repeat the lights.</p></div>`);
+  const colors=['#ef4444','#22c55e','#3b82f6','#f59e0b'];
+  const b=el('#board',root); const cells=[]; for(let i=0;i<4;i++){ const d=document.createElement('div'); d.className='cell'; d.style.height='100px'; d.style.background=colors[i]; b.appendChild(d); cells.push(d); }
+  let seq=[], idx=0, lock=true; function flash(i){ const d=cells[i]; const o=d.style.opacity; d.style.opacity='0.4'; setTimeout(()=>d.style.opacity=o,250); }
+  function play(){ lock=true; idx=0; seq.push(rand(4)); let k=0; const iv=setInterval(()=>{ flash(seq[k]); if(++k===seq.length){ clearInterval(iv); lock=false; } }, 500); }
+  cells.forEach((d,i)=>d.onclick=()=>{ if(lock) return; flash(i); if(i!==seq[idx++]){ alert('Wrong! Score '+(seq.length-1)); seq=[]; play(); } else if(idx===seq.length){ setTimeout(play,500); } });
+  play();
+}
+
+// 10) Hangman
+function initHangman(){
+  const words=['editor','report','planet','budget','market','people','growth','global','source','policy'];
+  const w=words[rand(words.length)]; const used=new Set(); let masked=w.replace(/./g,'_');
+  const root=mkArea(`<div class='pad center'><div class='cell' style='font:20px/1.6 monospace'>${masked}</div><input id='g' maxlength='1' class='cell' style='width:80px;text-align:center' placeholder='Letter'><p class='hint' id='h'></p></div>`);
+  let lives=6; el('#g',root).oninput=(e)=>{ const ch=e.target.value.toLowerCase(); e.target.value=''; if(!ch||used.has(ch))return; used.add(ch); if(w.includes(ch)){ masked=[...masked].map((c,i)=>c==='_'&&w[i]===ch?ch:c).join(''); el('.cell',root).textContent=masked; if(masked===w) alert('You win!'); } else { lives--; el('#h',root).textContent='Lives: '+lives; if(lives<=0) alert('Word: '+w); } };
+}
+
+// 11) 2048 (mini)
+function init2048(){
+  const root=mkArea(`<div class='pad center'><div id='b' class='grid-mini' style='grid-template-columns:repeat(4,1fr);width:320px'></div><p class='hint'>Use arrow keys.</p></div>`);
+  const b=el('#b',root); let g=Array(16).fill(0); function draw(){ b.innerHTML=''; g.forEach(v=>{ const d=document.createElement('div'); d.className='cell'; d.textContent=v||''; b.appendChild(d); }); }
+  function add(){ const z=g.map((v,i)=>v?null:i).filter(v=>v!==null); if(!z.length){ if(!moves()) alert('Game over'); return; } g[z[rand(z.length)]]=2; }
+  function moves(){ const t=g.slice(); ['L','R','U','D'].forEach(m=>step(m,true)); const ok=t.some((v,i)=>t[i]!==g[i]); g=t; return ok; }
+  function step(dir,simulate){ const N=4; const idx=(r,c)=>r*N+c; let moved=false; const lines=[]; if(dir==='L'||dir==='R'){ for(let r=0;r<N;r++){ let line=[]; for(let c=0;c<N;c++) line.push(g[idx(r,c)]); if(dir==='R') line.reverse(); line=compact(line); if(dir==='R') line.reverse(); for(let c=0;c<N;c++){ const i=idx(r,c); if(g[i]!==line[c]) moved=true; if(!simulate) g[i]=line[c]; } } } else { for(let c=0;c<N;c++){ let line=[]; for(let r=0;r<N;r++) line.push(g[idx(r,c)]); if(dir==='D') line.reverse(); line=compact(line); if(dir==='D') line.reverse(); for(let r=0;r<N;r++){ const i=idx(r,c); if(g[i]!==line[r]) moved=true; if(!simulate) g[i]=line[r]; } } }
+    return moved;
+  }
+  function compact(a){ a=a.filter(v=>v); for(let i=0;i<a.length-1;i++){ if(a[i]===a[i+1]){ a[i]*=2; a.splice(i+1,1); } } while(a.length<4) a.push(0); return a; }
+  add(); add(); draw();
+  window.onkeydown=e=>{ const k=e.key; const map={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D'}; if(!map[k])return; const moved=step(map[k]); if(moved){ add(); draw(); }
+  };
+}
+
+// 12) 15‑Puzzle
+function initSlide(){
+  const root=mkArea(`<div class='pad center'><div id='b' class='grid-mini' style='grid-template-columns:repeat(4,1fr);width:320px'></div></div>`);
+  const b=el('#b',root); let a=[...Array(15).keys()].map(x=>x+1).concat(0); a=shuffle(a);
+  function draw(){ b.innerHTML=''; a.forEach((v,i)=>{ const d=document.createElement('div'); d.className='cell'; d.textContent=v||''; if(!v) d.style.visibility='hidden'; d.onclick=()=>move(i); b.appendChild(d); }); }
+  function move(i){ const z=a.indexOf(0); const r=Math.floor(i/4), c=i%4, rz=Math.floor(z/4), cz=z%4; if((Math.abs(r-rz)+Math.abs(c-cz))===1){ [a[i],a[z]]=[a[z],a[i]]; draw(); if(a.slice(0,15).every((v,i)=>v===i+1)) alert('Solved!'); } }
+  draw();
+}
+
+// 13) Connect Four
+function initConnect4(){
+  const root=mkArea(`<div class='pad center'><div id='b' class='grid-mini' style='grid-template-columns:repeat(7,1fr);width:420px'></div><p class='hint' id='h'>Your turn.</p></div>`);
+  const W=7,H=6; const b=el('#b',root); let g=[...Array(W*H)].fill(0), turn=1;
+  function idx(r,c){return r*W+c}
+  function draw(){ b.innerHTML=''; for(let r=0;r<H;r++)for(let c=0;c<W;c++){ const d=document.createElement('div'); d.className='cell'; const v=g[idx(r,c)]; d.textContent=v? (v===1?'●':'○'):''; d.onclick=()=>drop(c); b.appendChild(d);} }
+  function drop(c){ for(let r=H-1;r>=0;r--){ const i=idx(r,c); if(!g[i]){ g[i]=turn; if(win(r,c,turn)){ el('#h',root).textContent=(turn===1?'You':'CPU')+' win'; } turn=3-turn; draw(); if(turn===2) setTimeout(cpu,300); return; } }
+  }
+  function win(r,c,p){ const dirs=[[1,0],[0,1],[1,1],[1,-1]]; return dirs.some(([dr,dc])=>{ let cnt=0; for(let k=-3;k<=3;k++){ const rr=r+dr*k, cc=c+dc*k; if(rr>=0&&rr<H&&cc>=0&&cc<W && g[idx(rr,cc)]===p){ cnt++; if(cnt>=4) return true; } else cnt=0; } return false; }); }
+  function cpu(){ const c=rand(W); drop(c); }
+  draw();
+}
+
+// 14) Pong (simple CPU)
+function initPong(){
+  const root=mkArea(`<div class='pad'><canvas id='cv' width='600' height='360'></canvas><p class='hint'>Move with <span class='kbd'>↑</span>/<span class='kbd'>↓</span></p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); let py=150, oy=150, by=180,bx=300, vx=3, vy=2, running=true;
+  function draw(){ x.clearRect(0,0,c.width,c.height); x.fillRect(10,py,10,60); x.fillRect(c.width-20,oy,10,60); x.beginPath(); x.arc(bx,by,6,0,6.28); x.fill(); }
+  function step(){ if(!running) return; bx+=vx; by+=vy; if(by<6||by>c.height-6) vy*=-1; if(bx<22 && by>py && by<py+60) vx=Math.abs(vx); if(bx>c.width-22 && by>oy && by<oy+60) vx=-Math.abs(vx); oy += (by>oy+30?2:-2); if(bx<0||bx>c.width) { alert('Point!'); bx=300; by=180; }
+    draw(); requestAnimationFrame(step); }
+  draw(); step();
+  window.onkeydown=e=>{ if(e.key==='ArrowUp') py=Math.max(0,py-20); if(e.key==='ArrowDown') py=Math.min(c.height-60,py+20); };
+}
+
+// 15) Breakout
+function initBreakout(){
+  const root=mkArea(`<div class='pad'><canvas id='cv' width='600' height='360'></canvas><p class='hint'>Move with mouse / ← →</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); let bx=300,by=200,vx=3,vy=-3,pw=90,px=255,br=[]; for(let r=0;r<4;r++)for(let i=0;i<10;i++) br.push({x:10+i*58,y:20+r*24,w:50,h:14});
+  function draw(){ x.clearRect(0,0,c.width,c.height); x.fillRect(px,c.height-20,pw,10); x.beginPath(); x.arc(bx,by,6,0,6.28); x.fill(); br.forEach(b=>{ x.fillRect(b.x,b.y,b.w,b.h); }); }
+  function step(){ bx+=vx; by+=vy; if(bx<6||bx>c.width-6) vx*=-1; if(by<6) vy*=-1; if(by>c.height-26 && bx>px && bx<px+pw) vy*=-1; br=br.filter(b=>{ const hit=bx>b.x&&bx<b.x+b.w&&by>b.y&&by<b.y+b.h; if(hit) vy*=-1; return !hit; }); if(by>c.height) { alert('Miss!'); bx=300; by=200; vy=-3; } draw(); requestAnimationFrame(step); }
+  draw(); step();
+  c.addEventListener('mousemove',e=>{ const r=c.getBoundingClientRect(); px=Math.max(0,Math.min(c.width-pw,e.clientX-r.left-pw/2)); });
+  window.onkeydown=e=>{ if(e.key==='ArrowLeft') px=Math.max(0,px-30); if(e.key==='ArrowRight') px=Math.min(c.width-pw,px+30); };
+}
+
+// 16) Flappy Square
+function initFlappy(){
+  const root=mkArea(`<div class='pad center'><canvas id='cv' width='420' height='560'></canvas><p class='hint'>Click / Space to flap.</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); let y=260, v=0, pipes=[], t=0, score=0; function add(){ const gap=130, top=60+rand(220); pipes.push({x:c.width,y:top-gap/2},{x:c.width, y:top+gap/2, bottom:true}); }
+  function draw(){ x.clearRect(0,0,c.width,c.height); x.fillRect(60,y,18,18); pipes.forEach(p=>{ if(p.bottom){ x.fillRect(p.x,p.y,c.width,9999);} else { x.fillRect(p.x,0,60,p.y); } }); x.fillText('Score '+score,10,14); }
+  function step(){ t++; if(t%90===0) add(); pipes.forEach(p=>p.x-=2.2); y+=v; v+=0.45; if(y<0||y>c.height) over(); pipes=pipes.filter(p=>p.x>-80); if(hit()) over(); draw(); requestAnimationFrame(step); }
+  function hit(){ return pipes.some(p=>{ const px=p.x, pw=60; const sx=60, sw=18; const sy=y, sh=18; if(px<sx+sw && px+pw>sx){ if(p.bottom? sy+sh>p.y : sy<p.y) return true; } if(!p.scored && px+pw<sx){ p.scored=true; score++; } return false; }); }
+  function over(){ alert('Game over. Score '+score); y=260; v=0; pipes=[]; score=0; }
+  function flap(){ v=-7; }
+  c.addEventListener('click',flap); window.onkeydown=e=>{ if(e.code==='Space') flap(); };
+  step();
+}
+
+// 17) Mini Maze (very simple static)
+function initMaze(){
+  const root=mkArea(`<div class='pad center'><canvas id='cv' width='360' height='360'></canvas><p class='hint'>Reach the green square with arrow keys.</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); const N=12,S=30; const maze=[
+    '############',
+    '#S   #     #',
+    '# ### ### ##',
+    '#   #   #  #',
+    '### # # #  #',
+    '#   # # ## #',
+    '# ###   #  #',
+    '#   ### ## #',
+    '##    #    #',
+    '# ### ######',
+    '#     #   E#',
+    '############']
+  let px=1,py=1; function draw(){ x.clearRect(0,0,c.width,c.height); for(let r=0;r<N;r++)for(let i=0;i<N;i++){ const ch=maze[r][i]; if(ch==='#'){ x.fillRect(i*S,r*S,S,S);} if(ch==='E'){ x.fillStyle='#22c55e'; x.fillRect(i*S+6,r*S+6,S-12,S-12); x.fillStyle='#000'; } }
+    x.fillRect(px*S+8,py*S+8,S-16,S-16);
+  }
+  function move(dx,dy){ const nx=px+dx, ny=py+dy; if(maze[ny][nx]!=='#'){ px=nx; py=ny; if(maze[ny][nx]==='E') alert('You escaped!'); draw(); } }
+  draw(); window.onkeydown=e=>{ if(e.key==='ArrowUp')move(0,-1); if(e.key==='ArrowDown')move(0,1); if(e.key==='ArrowLeft')move(-1,0); if(e.key==='ArrowRight')move(1,0); };
+}
+
+// 18) Word Scramble
+function initWordScramble(){
+  const words=['editor','anchor','banner','column','layout','script','portal','widget']; const w=words[rand(words.length)]; const s=shuffle(w.split('')).join('');
+  const root=mkArea(`<div class='pad center'><div class='cell' style='font:20px/1.6 monospace'>${s}</div><input id='t' class='cell' placeholder='Unscramble'><p id='o' class='hint'></p></div>`);
+  el('#t',root).oninput=e=>{ if(e.target.value.toLowerCase()===w){ el('#o',root).textContent='Correct!'; } };
+}
+
+// 19) Quick Math
+function initMathQuiz(){
+  const root=mkArea(`<div class='pad center'><div id='q' class='cell' style='font-size:20px'></div><input id='a' class='cell' placeholder='Answer'><p class='hint'>Score <span id='s'>0</span> / 10</p></div>`);
+  let score=0,count=0; function ask(){ const x=rand(20)+1, y=rand(20)+1, op=['+','-','×'][rand(3)]; const ans= op==='+'?x+y: op==='-'?x-y: x*y; el('#q',root).textContent=`${x} ${op} ${y} = ?`; el('#a',root).value=''; el('#a',root).focus(); el('#a',root).dataset.ans=ans; }
+  el('#a',root).onkeydown=e=>{ if(e.key==='Enter'){ if(+e.target.dataset.ans===+e.target.value){ score++; } count++; el('#s',root).textContent=score; if(count>=10){ alert('Score '+score+'/10'); score=0; count=0; } ask(); } };
+  ask();
+}
+
+// 20) Aim Trainer
+function initAim(){
+  const root=mkArea(`<div class='pad center'><canvas id='cv' width='520' height='320'></canvas><p class='hint'>Click 20 targets as fast as you can.</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); let targets=20, start=null; let cx=rand(c.width-40)+20, cy=rand(c.height-40)+20;
+  function draw(){ x.clearRect(0,0,c.width,c.height); x.beginPath(); x.arc(cx,cy,14,0,6.28); x.stroke(); }
+  function next(){ cx=rand(c.width-40)+20; cy=rand(c.height-40)+20; draw(); }
+  c.onclick=()=>{ if(!start) start=performance.now(); targets--; if(targets<=0){ const t=((performance.now()-start)/1000).toFixed(2); alert('Time: '+t+'s'); targets=20; start=null; } next(); };
+  draw();
+}
+
+// 21) Mini Sudoku (4x4)
+function initSudoku(){
+  const puzzle=[[0,2,0,4],[3,0,0,0],[0,0,0,2],[2,0,3,0]]; const solution=[[1,2,5,4],[3,4,2,1],[4,3,1,2],[2,1,3,5]]; // simple valid example
+  const root=mkArea(`<div class='pad center'><div id='s' class='grid-mini' style='grid-template-columns:repeat(4,50px)'></div><p class='hint'>Fill numbers 1–4. Green = correct, red = wrong.</p></div>`);
+  const s=el('#s',root); puzzle.forEach((row,r)=>row.forEach((v,c)=>{ const d=document.createElement('input'); d.className='cell'; d.style.width='50px'; d.style.height='50px'; d.style.textAlign='center'; d.maxLength=1; d.placeholder=v||''; d.disabled=!!v; d.value=v?String(v):''; d.oninput=()=>{ const val=+d.value; if(!val) {d.classList.remove('ok','bad'); return;} if(val===solution[r][c]){ d.classList.add('ok'); d.classList.remove('bad'); } else { d.classList.add('bad'); d.classList.remove('ok'); }
+    if([...s.querySelectorAll('input')].every(x=>x.disabled||(+x.value===solution[+x.dataset.r][+x.dataset.c]))){ alert('Solved!'); }
+  }; d.dataset.r=r; d.dataset.c=c; s.appendChild(d);}));
+}
+
+// 22) Minesweeper (8x8)
+function initMines(){
+  const W=8,H=8,B=10; const root=mkArea(`<div class='pad center'><div id='m' class='grid-mini' style='grid-template-columns:repeat(${W},36px)'></div><p class='hint'>Reveal all safe cells.</p></div>`);
+  const m=el('#m',root); const grid=[...Array(W*H)].map(_=>({mine:false,open:false,n:0,el:null}));
+  // place mines
+  let placed=0; while(placed<B){ const i=rand(W*H); if(!grid[i].mine){ grid[i].mine=true; placed++; }}
+  const idx=(r,c)=>r*W+c; const inb=(r,c)=>r>=0&&c>=0&&r<H&&c<W;
+  for(let r=0;r<H;r++)for(let c=0;c<W;c++){ let n=0; for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){ if(dr||dc){ const rr=r+dr,cc=c+dc; if(inb(rr,cc)&&grid[idx(rr,cc)].mine) n++; }} grid[idx(r,c)].n=n; }
+  grid.forEach((cell,i)=>{ const d=document.createElement('div'); d.className='cell'; d.style.width='36px'; d.style.height='36px'; d.onclick=()=>open(i); cell.el=d; m.appendChild(d); });
+  function open(i){ const cell=grid[i]; if(cell.open) return; cell.open=true; if(cell.mine){ cell.el.textContent='💣'; cell.el.classList.add('bad'); alert('Boom!'); return; } cell.el.textContent=cell.n||''; cell.el.classList.add('ok'); if(cell.n===0){ const r=Math.floor(i/W), c=i%W; for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){ if(dr||dc){ const rr=r+dr,cc=c+dc; if(inb(rr,cc)) open(idx(rr,cc)); }} }
+    if(grid.filter(x=>!x.open&&!x.mine).length===0) alert('Cleared!');
+  }
+}
+
+// 23) Lights Out
+function initLights(){
+  const N=5; const root=mkArea(`<div class='pad center'><div id='l' class='grid-mini' style='grid-template-columns:repeat(${N},60px)'></div><p class='hint'>Turn all tiles off.</p></div>`);
+  const l=el('#l',root); let a=[...Array(N*N)].map(()=>rand(2)); function draw(){ l.innerHTML=''; a.forEach((v,i)=>{ const d=document.createElement('div'); d.className='cell'; d.style.width='60px'; d.style.height='60px'; d.style.background=v?'#111':'#f8fafc'; d.onclick=()=>tap(i); l.appendChild(d); }); }
+  function tap(i){ const r=Math.floor(i/N), c=i%N; [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{ const rr=r+dr,cc=c+dc, idx=rr*N+cc; if(rr>=0&&cc>=0&&rr<N&&cc<N) a[idx]^=1; }); draw(); if(a.every(v=>v===0)) alert('Solved!'); }
+  draw();
+}
+
+// 24) Mastermind (4 pegs, 6 colors)
+function initMastermind(){
+  const colors=['#ef4444','#f59e0b','#10b981','#3b82f6','#8b5cf6','#f43f5e']; const secret=[0,0,0,0].map(()=>rand(colors.length));
+  const root=mkArea(`<div class='pad'><div id='rows'></div><button class='tbtn' id='add'>Submit Guess</button><p class='hint'>Black = correct spot, White = correct color wrong spot.</p></div>`);
+  const rows=el('#rows',root); let guess=[0,0,0,0];
+  function makeRow(){ const r=document.createElement('div'); r.className='row'; for(let i=0;i<4;i++){ const b=document.createElement('button'); b.className='tbtn'; b.style.width='36px'; b.style.height='36px'; b.style.background=colors[guess[i]]; b.onclick=()=>{ guess[i]=(guess[i]+1)%colors.length; b.style.background=colors[guess[i]]; }; r.appendChild(b); } const f=document.createElement('span'); f.className='pill'; f.textContent='Feedback'; r.appendChild(f); rows.appendChild(r); return r; }
+  let current=makeRow();
+  el('#add',root).onclick=()=>{ // score
+    let bulls=0,cows=0; const s=secret.slice(), g=guess.slice(); for(let i=0;i<4;i++){ if(g[i]===s[i]){ bulls++; s[i]=g[i]=-1; } }
+    for(let i=0;i<4;i++){ if(g[i]!==-1){ const j=s.indexOf(g[i]); if(j>-1){ cows++; s[j]=-1; } } }
+    current.querySelector('.pill').textContent=`● ${bulls}  ○ ${cows}`; if(bulls===4){ alert('Cracked!'); return; }
+    guess=[0,0,0,0]; current=makeRow();
+  };
+}
+
+// 25) Nonogram 5×5 (fixed)
+function initNonogram(){
+  const rows=[[1,1],[3],[1,1],[3],[1]]; const cols=[[2],[1,1],[3],[1,1],[1]]; const sol=['.#..#','###..','.#..#','###..','..#..'];
+  const root=mkArea(`<div class='pad'><div class='row'><div id='cluesC' style='margin-left:60px'></div></div><div class='row'><div id='cluesR' style='width:60px'></div><div id='board'></div></div><button class='tbtn' id='chk'>Check</button></div>`);
+  const board=el('#board',root); board.className='grid-mini'; board.style.gridTemplateColumns='repeat(5,40px)';
+  // render clues
+  el('#cluesC',root).innerHTML=cols.map(c=>`<div style='width:40px;text-align:center;font-size:12px;color:#555'>${c.join('<br>')}</div>`).join('');
+  el('#cluesR',root).innerHTML=rows.map(r=>`<div style='height:40px;display:grid;place-items:center;font-size:12px;color:#555'>${r.join(' ')}</div>`).join('');
+  const cells=[]; for(let i=0;i<25;i++){ const d=document.createElement('div'); d.className='cell'; d.style.width='40px'; d.style.height='40px'; d.onclick=()=>{ d.classList.toggle('ok'); d.style.background=d.classList.contains('ok')?'#111':'#f8fafc'; }; cells.push(d); board.appendChild(d); }
+  el('#chk',root).onclick=()=>{ const cur=cells.map(d=>d.classList.contains('ok')?'#':'.'); let ok=true; for(let r=0;r<5;r++){ const row=cur.slice(r*5,r*5+5).join(''); if(row!==sol[r]) ok=false; } alert(ok?'Correct!':'Not yet'); };
+}
+
+// 26) Reversi (6×6, simple AI)
+function initReversi(){
+  const N=6; const root=mkArea(`<div class='pad center'><div id='r' class='grid-mini' style='grid-template-columns:repeat(${N},48px)'></div><p class='hint' id='h'>Your turn (●).</p></div>`);
+  const r=el('#r',root); let g=[...Array(N*N)].fill(0); const idx=(y,x)=>y*N+x; g[idx(2,2)]=g[idx(3,3)]=2; g[idx(2,3)]=g[idx(3,2)]=1; draw(); let turn=1;
+  function draw(){ r.innerHTML=''; for(let y=0;y<N;y++)for(let x=0;x<N;x++){ const d=document.createElement('div'); d.className='cell'; d.style.width='48px'; d.style.height='48px'; const v=g[idx(y,x)]; d.textContent=v?(v===1?'●':'○'):''; d.onclick=()=>move(x,y); r.appendChild(d);} }
+  function caps(x,y,p){ if(g[idx(y,x)]) return []; const dirs=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]]; let out=[]; for(const [dx,dy] of dirs){ let i=x+dx,j=y+dy, mid=[]; while(i>=0&&j>=0&&i<N&&j<N&&g[idx(j,i)]===3-p){ mid.push([i,j]); i+=dx; j+=dy; }
+    if(i>=0&&j>=0&&i<N&&j<N&&g[idx(j,i)]===p && mid.length) out=out.concat(mid);
+  } return out; }
+  function move(x,y){ const c=caps(x,y,turn); if(!c.length) return; g[idx(y,x)]=turn; c.forEach(([i,j])=>g[idx(j,i)]=turn); turn=3-turn; draw(); if(turn===2) setTimeout(ai,300); }
+  function ai(){ const moves=[]; for(let y=0;y<N;y++)for(let x=0;x<N;x++){ const c=caps(x,y,2); if(c.length) moves.push({x,y,c}); } if(!moves.length){ turn=1; el('#h',root).textContent='Your turn'; return; } moves.sort((a,b)=>b.c.length-a.c.length); const m=moves[0]; g[idx(m.y,m.x)]=2; m.c.forEach(([i,j])=>g[idx(j,i)]=2); turn=1; draw(); }
+}
+
+// 27) Towers of Hanoi (4 discs)
+function initHanoi(){
+  const root=mkArea(`<div class='pad center'><div id='p' class='row'></div><p class='hint'>Move all discs to the last peg.</p></div>`);
+  const p=el('#p',root); const pegs=[ [4,3,2,1], [], [] ]; let sel=null; function draw(){ p.innerHTML=''; pegs.forEach((peg,i)=>{ const d=document.createElement('div'); d.className='cell'; d.style.width='140px'; d.style.minHeight='160px'; d.style.display='grid'; d.style.alignContent='end'; d.onclick=()=>clickPeg(i); peg.slice().reverse().forEach(v=>{ const bar=document.createElement('div'); bar.style.height='18px'; bar.style.margin='3px auto'; bar.style.width=(v*24)+'px'; bar.style.background='#111'; bar.style.borderRadius='8px'; d.appendChild(bar); }); p.appendChild(d); }); }
+  function clickPeg(i){ if(sel==null){ sel=i; } else { const from=pegs[sel], to=pegs[i]; const v=from[from.length-1]; if(v && (!to.length || v<to[to.length-1])){ to.push(from.pop()); if(pegs[2].length===4) alert('Solved!'); } sel=null; } draw(); }
+  draw();
+}
+
+// 28) Tetris (very small)
+function initTetris(){
+  const root=mkArea(`<div class='pad center'><canvas id='cv' width='200' height='360'></canvas><p class='hint'>← → move, ↑ rotate, ↓ drop</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); const W=10,H=18,S=20; let grid=[...Array(W*H)].fill(0);
+  const shapes=[ [[1,1,1,1]], [[1,1],[1,1]], [[0,1,0],[1,1,1]], [[1,0,0],[1,1,1]], [[0,0,1],[1,1,1]], [[1,1,0],[0,1,1]], [[0,1,1],[1,1,0]] ];
+  let p=newPiece(); let over=false; function newPiece(){ const s=shapes[rand(shapes.length)].map(r=>r.slice()); return {s, x:3, y:0}; }
+  function rot(s){ const n=s[0].length,m=s.length; const r=[...Array(n)].map(()=>Array(m).fill(0)); for(let y=0;y<m;y++)for(let x2=0;x2<n;x2++) r[x2][m-1-y]=s[y][x2]; return r; }
+  function coll(px,py,ps){ for(let y=0;y<ps.length;y++)for(let x2=0;x2<ps[0].length;x2++){ if(ps[y][x2]){ const X=px+x2,Y=py+y; if(X<0||X>=W||Y>=H|| (Y>=0 && grid[Y*W+X])) return true; } } return false; }
+  function merge(){ for(let y=0;y<p.s.length;y++)for(let x2=0;x2<p.s[0].length;x2++){ if(p.s[y][x2]){ const X=p.x+x2,Y=p.y+y; if(Y<0){ over=true; return;} grid[Y*W+X]=1; } } // clear lines
+    for(let y=H-1;y>=0;y--){ if(grid.slice(y*W,(y+1)*W).every(v=>v)){ grid.splice(y*W,W); grid.unshift(...Array(W).fill(0)); y++; } }
+  }
+  function draw(){ x.clearRect(0,0,c.width,c.height); // grid
+    for(let y=0;y<H;y++)for(let x2=0;x2<W;x2++){ if(grid[y*W+x2]){ x.fillRect(x2*S,y*S,S-1,S-1);} }
+    for(let y=0;y<p.s.length;y++)for(let x2=0;x2<p.s[0].length;x2++){ if(p.s[y][x2]) x.fillRect((p.x+x2)*S,(p.y+y)*S,S-1,S-1); }
+  }
+  function tick(){ if(over) { alert('Game over'); return; } if(!coll(p.x,p.y+1,p.s)) p.y++; else { merge(); p=newPiece(); } draw(); setTimeout(tick, 450); }
+  window.onkeydown=e=>{ if(e.key==='ArrowLeft' && !coll(p.x-1,p.y,p.s)) p.x--; if(e.key==='ArrowRight' && !coll(p.x+1,p.y,p.s)) p.x++; if(e.key==='ArrowUp'){ const r=rot(p.s); if(!coll(p.x,p.y,r)) p.s=r; } if(e.key==='ArrowDown'){ if(!coll(p.x,p.y+1,p.s)) p.y++; }
+    draw(); };
+  draw(); tick();
+}
+
+// 29) Bubble Pop (timed)
+function initBubbles(){
+  const root=mkArea(`<div class='pad center'><canvas id='cv' width='520' height='320'></canvas><p class='hint'>Pop as many bubbles as you can in 30s.</p></div>`);
+  const c=el('#cv',root),x=c.getContext('2d'); let t=0,score=0,over=false; const bs=[...Array(12)].map(()=>({x:rand(500)+10,y:rand(300)+10,vx:(Math.random()*2+0.5)*(Math.random()<.5?-1:1),vy:(Math.random()*2+0.5)*(Math.random()<.5?-1:1)}));
+  function draw(){ x.clearRect(0,0,c.width,c.height); bs.forEach(b=>{ x.beginPath(); x.arc(b.x,b.y,12,0,6.28); x.stroke(); }); x.fillText('Score '+score+'  Time '+(30-Math.floor(t/60)),10,14); }
+  function step(){ if(over) return; t++; bs.forEach(b=>{ b.x+=b.vx; b.y+=b.vy; if(b.x<12||b.x>c.width-12) b.vx*=-1; if(b.y<12||b.y>c.height-12) b.vy*=-1; }); if(t>60*30){ over=true; alert('Score '+score); } draw(); requestAnimationFrame(step); }
+  c.addEventListener('click',e=>{ const r=c.getBoundingClientRect(); const x0=e.clientX-r.left, y0=e.clientY-r.top; bs.forEach(b=>{ const dx=b.x-x0, dy=b.y-y0; if(dx*dx+dy*dy<144){ score++; b.x=rand(500)+10; b.y=rand(300)+10; } }); });
+  draw(); step();
+}
+
+// 30) 4‑Queens
+function initNQueens(){
+  const N=4; const root=mkArea(`<div class='pad center'><div id='q' class='grid-mini' style='grid-template-columns:repeat(${N},60px)'></div><p class='hint'>Place 4 queens so none attack each other. Click to place/remove.</p></div>`);
+  const q=el('#q',root); const a=[...Array(N*N)].fill(0); function draw(){ q.innerHTML=''; for(let r=0;r<N;r++)for(let c=0;c<N;c++){ const d=document.createElement('div'); d.className='cell'; d.style.width='60px'; d.style.height='60px'; d.textContent=a[r*N+c]?'♛':''; d.onclick=()=>{ a[r*N+c]^=1; check(); draw(); }; q.appendChild(d);} }
+  function check(){ // win if 4 queens and all safe
+    const pos=[]; for(let i=0;i<a.length;i++) if(a[i]) pos.push([Math.floor(i/N), i%N]); if(pos.length!==4) return; function atk(p1,p2){ return p1[0]===p2[0]||p1[1]===p2[1]||Math.abs(p1[0]-p2[0])===Math.abs(p1[1]-p2[1]); } for(let i=0;i<4;i++) for(let j=i+1;j<4;j++){ if(atk(pos[i],pos[j])) return; } alert('Solved!'); }
+  draw();
+}
+
+// helper: mount area
+function mkArea(html){ const area=el('#gameArea'); area.innerHTML=`<div class='toolbar'><button class='tbtn' onclick='location.reload()'>Hard Reload</button></div>`+html; return area; }
+</script>
+</body>
+</html>
